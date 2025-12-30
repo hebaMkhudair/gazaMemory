@@ -2,146 +2,123 @@
 @section('title', 'قصصي - ذاكرة غزة')
 @section('content')
 
-    <div class="flex-grow flex p-6 space-x-6">
-        {{-- الشريط الجانبي الأيسر --}}
-        <div class="w-1/4 bg-white rounded-lg shadow-md p-6 flex flex-col space-y-6">
-            {{-- قصة اليوم --}}
-            <div>
-                <p class="text-gray-500 text-sm">{{ \Carbon\Carbon::now()->format('l, F j') }}</p>
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">قصة اليوم</h2>
-                @if ($todaysStory)
-                    <div class="flex items-start">
-                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
-                            <img src="{{ asset('storage/' . $todaysStory->cover_image) }}" alt="{{ $todaysStory->title }}"
-                                class="w-full h-full object-cover">
-                        </div>
-                        <div class="mt-1 ml-4 p-3">
-                            <p class="text-gray-700 font-medium">{{ $todaysStory->title }}</p>
-                            <p class="text-gray-500 text-sm">{{ $todaysStory->user->name ?? 'كاتب غير معروف' }}</p>
+    <div class="flex-grow mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Grid Layout: Responsive from mobile to desktop -->
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                
+                <!-- Left Sidebar - Hidden on mobile, visible on larger screens -->
+                <div class="hidden md:flex md:col-span-1 lg:col-span-1 flex-col space-y-6">
+                    <!-- Story of the Day -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ \Carbon\Carbon::now()->format('l, F j') }}</p>
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">قصة اليوم</h2>
+                        @if ($todaysStory)
+                            <a href="{{ route('stories.show', $todaysStory->slug) }}" class="block hover:opacity-80 transition">
+                                <div class="w-full h-32 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 mb-3">
+                                    <img src="{{ asset('storage/' . $todaysStory->cover_image) }}" alt="{{ $todaysStory->title }}"
+                                        class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                                </div>
+                                <p class="text-gray-900 dark:text-gray-100 font-medium text-sm line-clamp-2">{{ $todaysStory->title }}</p>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs mt-2">{{ $todaysStory->user->name ?? 'كاتب غير معروف' }}</p>
+                            </a>
+                        @else
+                            <p class="text-gray-600 dark:text-gray-400">لا توجد قصة لهذا اليوم حالياً.</p>
+                        @endif
+                    </div>
+
+                    <!-- Featured Story -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        @if ($todaysStory)
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">{{ $todaysStory->title }}</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-3 mb-4">
+                                {{ Str::words($todaysStory->content, 30, '...') }}
+                            </p>
+                            <a href="{{ route('stories.show', $todaysStory->slug) }}"
+                                class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm transition">
+                                أكمل القراءة &rarr;
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="col-span-1 md:col-span-2 lg:col-span-2 space-y-6">
+                    <!-- Trending Stories -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 text-center">أشهر القصص</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @forelse ($trendingStories as $story)
+                                <a href="{{ route('stories.show', $story->slug) }}" class="hover:opacity-80 transition">
+                                    <div class="flex flex-col bg-gray-50 dark:bg-gray-700 p-4 rounded-lg h-full">
+                                        <div class="w-full h-40 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-600 mb-3">
+                                            <img src="{{ asset('storage/' . $story->cover_image) }}" alt="{{ $story->title }}"
+                                                class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                                        </div>
+                                        <h3 class="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">{{ $story->title }}</h3>
+                                        <p class="text-gray-600 dark:text-gray-400 text-sm mt-2">{{ $story->user->name ?? 'كاتب غير معروف' }}</p>
+                                    </div>
+                                </a>
+                            @empty
+                                <p class="col-span-full text-center text-gray-600 dark:text-gray-400">لا توجد قصص شائعة حالياً.</p>
+                            @endforelse
                         </div>
                     </div>
-                @else
-                    <p class="text-gray-600">لا توجد قصة لهذا اليوم حالياً.</p>
-                @endif
-            </div>
 
-            <hr class="border-t border-gray-200">
+                    <!-- Categories -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">الأقسام</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            @forelse ($sections as $section)
+                                <a href="{{ route('stories.index', ['type' => $section['slug']]) }}" class="hover:opacity-80 transition">
+                                    <div class="flex flex-col items-center text-center">
+                                        <div class="w-full h-24 sm:h-28 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 mb-2">
+                                            <img src="{{ asset('assets/img/' . $section['image']) }}" alt="{{ $section['name'] }}"
+                                                class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                                        </div>
+                                        <p class="text-gray-900 dark:text-gray-100 font-medium text-sm">{{ $section['name'] }}</p>
+                                    </div>
+                                </a>
+                            @empty
+                                <p class="col-span-full text-center text-gray-600 dark:text-gray-400">لا توجد أقسام حالياً.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
 
-            {{-- تحدي القراءة (بيانات ثابتة حالياً) --}}
-            <div class="flex flex-col items-center text-center">
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">من ذاكرة غزة</h3>
-                <div class="bg-blue-100 p-4 rounded-lg flex flex-col items-center">
-                    <img src="{{ asset('storage/' . $todaysStory->cover_image) }}" alt="gazaMemory"
-                        class="w-32 h-24 object-contain mb-2 rounded-lg">
-                    <p class="text-gray-800 font-bold">{{ $todaysStory->title }}</p>
-                    <p class="text-gray-700 text-sm">{{ $todaysStory->user->name ?? 'كاتب غير معروف' }}</p>
+                <!-- Right Sidebar - Hidden on mobile, visible on larger screens -->
+                <div class="hidden lg:flex lg:col-span-1 flex-col space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center text-center h-fit sticky top-24">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">اكتب قصتك</h2>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                            شارك قصتك معنا لتبقى محفورة في ذاكرة غزة
+                        </p>
+                        <div class="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-lg w-full mb-4">
+                            <h3 class="text-lg font-bold text-blue-800 dark:text-blue-300 mb-2">ذاكرة غزة</h3>
+                            <img src="{{ asset('assets/img/gazaMemory.png') }}" alt="Write Story"
+                                class="w-28 h-24 object-contain mx-auto mb-2">
+                            <p class="text-gray-700 dark:text-gray-300 font-medium text-sm">عبر عن نفسك</p>
+                        </div>
+                        <a href="{{ route('stories.create') }}"
+                            class="w-14 h-14 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-full flex items-center justify-center text-3xl font-light shadow-lg transition">
+                            +
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <hr class="border-t border-gray-200">
-
-            {{-- الكاتب (من قصة اليوم) --}}
-            <div>
-                <p class="text-gray-600">الكاتب</p>
-                <p class="text-lg font-semibold text-gray-800">
-                    {{ $todaysStory->user->name ?? 'كاتب غير معروف' }}
+            <!-- Mobile CTA - Visible only on mobile -->
+            <div class="md:hidden mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">اكتب قصتك</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                    شارك قصتك معنا لتبقى محفورة في ذاكرة غزة
                 </p>
-            </div>
-
-            <hr class="border-t border-gray-200">
-
-            {{-- رفوف القصة (الآن بيانات ديناميكية) --}}
-            <div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ $todaysStory->title }}</h3>
-                <div class="space-y-2">
-                    {{-- عرض أول 30 كلمة من القصة --}}
-                    <p class="text-gray-600">
-                        {{ Str::words($todaysStory->content, 30, '...') }}
-                    </p>
-                    <p class="text-gray-600 mt-2">
-                        {{-- زر "أكمل القراءة" ينقل إلى صفحة القصة كاملة --}}
-                        <a href="{{ route('stories.show', $todaysStory->slug) }}"
-                            class="text-blue-600 hover:underline font-medium">
-                            أكمل القراءة &rarr;
-                        </a>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <hr class="border-t border-gray-200">
-
-        {{-- القسم الأوسط (أشهر القصص والأقسام) --}}
-        <div class="w-2/4 flex flex-col space-y-6">
-            {{-- أشهر القصص --}}
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4 text-center">أشهر القصص</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    @forelse ($trendingStories as $story)
-                        <a href="{{ route('stories.show', $story->slug) }}">
-                            <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                                <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
-                                    <img src="{{ asset('storage/' . $story->cover_image) }}" alt="{{ $story->title }}"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <div class="ml-3 p-3">
-                                    <h3 class="font-semibold text-gray-800">{{ $story->title }}</h3>
-                                    <p class="text-gray-600 text-sm">{{ $story->user->name ?? 'كاتب غير معروف' }}
-                                    </p>
-                                    <p class="text-gray-500 text-xs">{{ Str::limit($story->content, 30) }}</p>
-                                </div>
-                            </div>
-                        </a>
-                    @empty
-                        <p class="col-span-2 text-center text-gray-600">لا توجد قصص شائعة حالياً.</p>
-                    @endforelse
-                </div>
-            </div>
-
-           {{-- الأقسام (تُمرر من HomeController@index) --}}
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">الأقسام</h2>
-                {{-- التعديل هنا: استخدام flexbox مع التمرير الأفقي --}}
-                <div class="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide"> {{-- أضفنا scrollbar-hide لإخفاء شريط التمرير الافتراضي إذا أردت --}}
-                    @forelse ($sections as $section)
-                        {{-- هنا نستخدم المتغير $sections الممرر من HomeController --}}
-                        <a href="{{ route('stories.index', ['type' => $section['slug']]) }}" class="flex-shrink-0 w-36"> {{-- flex-shrink-0 و w-36 لتحديد عرض كل عنصر --}}
-                            <div class="flex flex-col items-center text-center p-2">
-                                <div class="w-full h-32 rounded-lg overflow-hidden bg-gray-200 mb-2">
-                                    <img src="{{ asset('assets/img/' . $section['image']) }}" alt="{{ $section['name'] }}"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <p class="text-gray-800 font-medium">{{ $section['name'] }}</p>
-                            </div>
-                        </a>
-                    @empty
-                        <p class="col-span-4 text-center text-gray-600">لا توجد أقسام حالياً.</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-
-
-        {{-- الشريط الجانبي الأيمن --}}
-        <div class="w-1/4 bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center space-y-6">
-            <h2 class="text-lg font-semibold text-gray-800">أكتب قصتك</h2>
-            <p class="text-gray-600 text-sm">شارك قصتك معنا لتبقى محفورة في ذاكرة غزة ونبعث الأمل ونشارك أفراحنا
-                وأتراحنا مع العالم</p>
-            <div class="bg-blue-100 p-4 rounded-lg flex flex-col items-center w-full">
-                <h3 class="text-xl font-bold text-blue-800 mb-2">ذاكرة غزة</h3>
-                <img src="{{ asset('assets/img/gazaMemory.png') }}" alt="Write Story Illustration"
-                    class="w-40 h-32 object-contain mb-4">
-                <p class="text-gray-700 font-medium">عبر عن نفسك وعن مشاعرك</p>
-            </div>
-            <div class="mt-auto w-full">
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">شارك في صنع ذاكرة غزة</h3>
                 <a href="{{ route('stories.create') }}"
-                    class="w-16 h-16 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-light mx-auto shadow-lg">
-                    +
+                    class="inline-block bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">
+                    ابدأ الآن
                 </a>
             </div>
         </div>
     </div>
 
-    </div>
 @endsection

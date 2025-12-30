@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('title', 'تعديل القصة - ذاكرة غزة') {{-- تغيير العنوان ليكون أكثر دقة --}}
 @section('content')
-    <main class="flex-grow container mx-auto px-4 py-8 flex justify-center items-start">
-        <div class="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
-            <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">تعديل القصة: {{ $story->title }}</h1>
+    <main class="flex-grow container mx-auto px-4 py-8 mt-20 flex justify-center items-start">
+        <div class="w-full max-w-2xl bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">تعديل القصة: {{ $story->title }}</h1>
 
             <form action="{{ route('stories.update', $story->slug) }}" method="POST" enctype="multipart/form-data"
                 class="space-y-6">
@@ -13,22 +13,22 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Book Name (عنوان القصة) --}}
                     <div>
-                        <label for="title" class="block text-sm font-medium text-gray-700">عنوان القصة <span
+                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">عنوان القصة <span
                                 class="text-red-500">*</span></label>
                         <input type="text" name="title" id="title"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
                             required value="{{ old('title', $story->title) }}"> {{-- ملء القيمة الحالية --}}
                         @error('title')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     {{-- Section (قسم/نوع القصة) --}}
                     <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700">القسم / النوع <span
+                        <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">القسم / النوع <span
                                 class="text-red-500">*</span></label>
                         <select name="type" id="type"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
                             required>
                             <option value="">اختر القسم</option>
                             {{-- **هنا التعديل الرئيسي: توحيد الخيارات لتتوافق مع الأنواع الموحدة** --}}
@@ -49,23 +49,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Full Name (اسم المستخدم الحالي، للقراءة فقط) --}}
                     <div>
-                        <label for="author_name" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
+                        <label for="author_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">الاسم الكامل</label>
                         <input type="text" id="author_name"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100 sm:text-sm p-2"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md shadow-sm bg-gray-100 dark:bg-gray-600 sm:text-sm p-2"
                             value="{{ Auth::user()->name }}" disabled>
-                        <p class="mt-1 text-sm text-gray-500">سيتم حفظ قصتك باسمك المسجل.</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">سيتم حفظ قصتك باسمك المسجل.</p>
                     </div>
 
                     {{-- Cover Image (صورة الغلاف) --}}
                     <div>
-                        <label for="cover_image" class="block text-sm font-medium text-gray-700">صورة الغلاف</label>
+                        <label for="cover_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">صورة الغلاف</label>
                         <input type="file" name="cover_image" id="cover_image"
-                            class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2">
-                        <p class="mt-1 text-sm text-gray-500">بصيغ: JPG, PNG, GIF (الحد الأقصى 2MB). اترك فارغًا للاحتفاظ
+                            class="mt-1 block w-full text-sm text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 focus:outline-none p-2">
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">بصيغ: JPG, PNG, GIF (الحد الأقصى 2MB). اترك فارغًا للاحتفاظ
                             بالصورة الحالية.</p>
                         @if ($story->cover_image)
                             <div class="mt-2">
-                                <p class="text-gray-700 text-sm">الصورة الحالية:</p>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">الصورة الحالية:</p>
                                 <img src="{{ asset('storage/' . $story->cover_image) }}" alt="صورة الغلاف الحالية"
                                     class="w-24 h-24 object-cover rounded-md mt-1">
                             </div>
@@ -78,25 +78,25 @@
 
                 {{-- Write your book (محتوى القصة) --}}
                 <div>
-                    <label for="content" class="block text-sm font-medium text-gray-700">محتوى القصة <span
+                    <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">محتوى القصة <span
                             class="text-red-500">*</span></label>
                     <textarea name="content" id="content" rows="10"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                        class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
                         required>{{ old('content', $story->content) }}</textarea> {{-- ملء القيمة الحالية --}}
                     @error('content')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        <p class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="flex justify-end space-x-4 rtl:space-x-reverse">
                     {{-- زر الإلغاء --}}
                     <a href="{{ route('stories.my-stories') }}"
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         إلغاء
                     </a>
                     {{-- زر حفظ التعديلات --}}
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         حفظ التعديلات
                     </button>
                 </div>
