@@ -21,13 +21,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.delete-avatar');
+
+    // Story routes - static routes BEFORE dynamic routes
     Route::get('/stories/create', [StoryController::class, 'create'])->name('stories.create');
-    Route::post('/stories', [StoryController::class, 'store'])->name('stories.store');
     Route::get('/my-stories', [StoryController::class, 'myStories'])->name('stories.my-stories');
+    Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
+    
+    // Dynamic story routes (must come after static routes)
+    Route::post('/stories', [StoryController::class, 'store'])->name('stories.store');
     Route::get('/stories/{slug}/edit', [StoryController::class, 'edit'])->name('stories.edit');
     Route::patch('/stories/{slug}', [StoryController::class, 'update'])->name('stories.update');
     Route::delete('/stories/{slug}', [StoryController::class, 'destroy'])->name('stories.destroy');
-    Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
 
     // Comment routes
     Route::post('/stories/{story}/comments', [CommentController::class, 'store'])->name('comments.store');
