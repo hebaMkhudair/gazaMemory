@@ -62,7 +62,7 @@ class StoryController extends Controller
         $myStories = Story::where('user_id', Auth::id())
             ->latest()
             ->get();
-
+// dd($myStories);
         return view('stories.my-stories', compact('myStories','user'));
     }
 

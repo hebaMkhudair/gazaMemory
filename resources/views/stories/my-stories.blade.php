@@ -2,9 +2,19 @@
 @section('title', 'قصصي - ذاكرة غزة')
 @section('content')
 
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">قصصي التي كتبتها</h1>
+    <main class="flex-grow container mx-auto px-4 py-8 relative"> {{-- إضافة relative هنا --}}
 
+        <div class="absolute top-8 ltr:left-8 rtl:right-8">
+            <a href="{{ route('stories.create') }}" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ltr:mr-2 rtl:ml-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                كتابة قصة
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">قصصي التي كتبتها</h1>
+        
         @if($myStories->isEmpty())
             <div class="bg-white p-6 rounded-lg shadow-md text-center">
                 <p class="text-gray-600 text-lg mb-4">لم تقم بكتابة أي قصص بعد.</p>
@@ -20,7 +30,6 @@
                             <img src="{{ asset('storage/' . $story->cover_image) }}" alt="غلاف القصة" class="w-full h-48 object-cover">
                         @else
                             <img src="{{ asset('assets/img/default-story-cover.png') }}" alt="غلاف افتراضي" class="w-full h-48 object-cover">
-                            {{-- تأكد من وجود صورة افتراضية في هذا المسار إذا لم يكن هناك غلاف --}}
                         @endif
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-800 mb-2">

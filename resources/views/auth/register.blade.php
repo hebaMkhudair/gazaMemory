@@ -19,16 +19,16 @@
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="bg-white rounded-xl shadow-lg p-8 md:p-12 space-y-8 w-full max-w-md">
-        <div class="text-center">
+         <div class="text-center">
             <div class="flex items-center justify-center mb-4">
                 <img src="{{ asset('assets/img/gazaMemory.png') }}" alt="Logo" class="h-20 w-20 rounded-full mr-2">
                 <span class="text-2xl font-bold text-gray-900 p-1">ذاكرة غزة</span>
             </div>
             <h2 class="mt-4 text-3xl font-extrabold text-gray-900">
-                أهلاً بك في ذاكرة غزة
+                أهلاً بك!
             </h2>
             <p class="mt-2 text-sm text-gray-600">
-                سجّل لكي تستمر
+                سجّل لكي تستمر 
             </p>
         </div>
 
