@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.delete-avatar');
 
     // Story routes - static routes BEFORE dynamic routes
-    Route::get('/stories/create', [StoryController::class, 'create'])->name('stories.create');
+    Route::get('/create-story', [StoryController::class, 'create'])->name('stories.create');
     Route::get('/my-stories', [StoryController::class, 'myStories'])->name('stories.my-stories');
     Route::get('/stories', [StoryController::class, 'index'])->name('stories.index');
     
