@@ -26,7 +26,7 @@
     </style>
     @yield('styles') {{-- لتمكين إضافة CSS خاص بالصفحة --}}
 </head>
-<body class="bg-gray-100 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-gray-100 dark:bg-gray-900 font-sans antialiased min-h-screen flex flex-col text-gray-900 dark:text-gray-100">
 
     @include('partials.header')
 
