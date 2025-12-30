@@ -35,24 +35,24 @@ class StoryFactory extends Factory
 
         $coverImage = null;
 
-        if (!empty($images)) {
+        if (! empty($images)) {
             // اختيار صورة عشوائية من الصور الموجودة
             $randomImage = $this->faker->randomElement($images);
             $imageFileName = basename($randomImage); // الحصول على اسم الملف فقط
 
             // التأكد من وجود مجلد الوجهة، وإنشاءه إذا لم يكن موجوداً
-            if (!Storage::disk('public')->exists($destinationPath)) {
+            if (! Storage::disk('public')->exists($destinationPath)) {
                 Storage::disk('public')->makeDirectory($destinationPath);
             }
 
             // إنشاء اسم فريد للصورة الجديدة لتجنب التكرار
-            $newImageName = time() . '_' . uniqid() . '_' . $imageFileName;
+            $newImageName = time().'_'.uniqid().'_'.$imageFileName;
 
             // نسخ الصورة من المصدر إلى الوجهة
-            Storage::disk('public')->copy($randomImage, $destinationPath . '/' . $newImageName);
+            Storage::disk('public')->copy($randomImage, $destinationPath.'/'.$newImageName);
 
             // حفظ المسار النسبي للصورة (الذي سيستخدم في Blade)
-            $coverImage = $destinationPath . '/' . $newImageName;
+            $coverImage = $destinationPath.'/'.$newImageName;
         } else {
             dd($images, Storage::disk('public')->exists($seedImagesPath), Storage::disk('public')->files($seedImagesPath));
             // **هذا الجزء هو المهم إذا لم يكن لديك صور في seed_images**
@@ -63,7 +63,7 @@ class StoryFactory extends Factory
             //    $coverImage = 'assets/img/default_story_cover.png'; // تأكد من وجودها
             // 3. تركها null إذا كنت متأكداً أن هذا لن يسبب مشاكل في العرض
             $coverImage = 'default_cover_image.jpg'; // مثال: استخدام اسم صورة افتراضية موجودة في public/storage/story_covers
-                                                     // يجب أن تضع هذه الصورة يدوياً هناك
+            // يجب أن تضع هذه الصورة يدوياً هناك
         }
 
         // إنشاء العنوان ومن ثم السلاغ

@@ -6,10 +6,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoryController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view ('register');
-// });
-Route::get('/', [RegisteredUserController::class, 'create'])
+Route::get('/', [StoryController::class, 'publicStories'])->name('home');
+Route::get('/register', [RegisteredUserController::class, 'create'])
     ->name('register');
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -30,4 +28,4 @@ Route::middleware('auth')->group(function () {
 
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

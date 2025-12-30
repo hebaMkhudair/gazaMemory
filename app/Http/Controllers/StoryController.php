@@ -53,6 +53,7 @@ class StoryController extends Controller
 
         return view('stories.index', compact('stories', 'currentSectionName', 'user'));
     }
+
     /**
      * Display a listing of stories written by the authenticated user.
      */
@@ -62,8 +63,9 @@ class StoryController extends Controller
         $myStories = Story::where('user_id', Auth::id())
             ->latest()
             ->get();
-// dd($myStories);
-        return view('stories.my-stories', compact('myStories','user'));
+
+        // dd($myStories);
+        return view('stories.my-stories', compact('myStories', 'user'));
     }
 
     /**
@@ -74,6 +76,7 @@ class StoryController extends Controller
     {
         // استخدام Auth Facade بشكل صحيح
         $user = Auth::user(); // <--- استخدام Auth::user() بدلاً من Auth()->user()
+
         return view('stories.create', compact('user'));
     }
 
@@ -102,7 +105,7 @@ class StoryController extends Controller
         $originalSlug = $slug;
         $count = 1;
         while (Story::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $count++;
+            $slug = $originalSlug.'-'.$count++;
         }
 
         // إنشاء قصة جديدة وحفظها في قاعدة البيانات
@@ -144,7 +147,8 @@ class StoryController extends Controller
         if (Auth::id() !== $story->user_id) { // <--- استخدام Auth::id()
             abort(403, 'Unauthorized action.');
         }
-        return view('stories.edit', compact('story','user'));
+
+        return view('stories.edit', compact('story', 'user'));
     }
 
     /**
@@ -153,7 +157,7 @@ class StoryController extends Controller
     public function update(Request $request, string $slug)
     {
         $story = Story::where('slug', $slug)->firstOrFail();
-        if (Auth::id() !== $story->user_id) { 
+        if (Auth::id() !== $story->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -164,7 +168,7 @@ class StoryController extends Controller
             'type' => 'nullable|string|max:255',
         ]);
 
-        $coverImagePath = $story->cover_image; 
+        $coverImagePath = $story->cover_image;
         if ($request->hasFile('cover_image')) {
             // حذف الصورة القديمة إذا كانت موجودة
             if ($story->cover_image) {
@@ -181,12 +185,11 @@ class StoryController extends Controller
             $originalNewSlug = $newSlug;
             $count = 1;
             while (Story::where('slug', $newSlug)->exists()) {
-                $newSlug = $originalNewSlug . '-' . $count++;
+                $newSlug = $originalNewSlug.'-'.$count++;
             }
         } else {
             $newSlug = $story->slug; // إذا لم يتغير العنوان، احتفظ بنفس الـ slug
         }
-
 
         $story->update([
             'title' => $request->title,
@@ -206,7 +209,7 @@ class StoryController extends Controller
      */
     public function destroy(string $slug)
     {
-         $story = Story::where('slug', $slug)->firstOrFail();
+        $story = Story::where('slug', $slug)->firstOrFail();
         if (Auth::id() !== $story->user_id) { // <--- استخدام Auth::id()
             abort(403, 'Unauthorized action.');
         }
@@ -221,5 +224,17 @@ class StoryController extends Controller
 
         return redirect()->route('stories.my-stories')
             ->with('success', 'Story deleted successfully!');
+    }
+
+    /**
+     * Display published stories for the public homepage.
+     */
+    public function publicStories(): \Illuminate\View\View
+    {
+        $stories = Story::whereNotNull('published_at')
+            ->latest('published_at')
+            ->paginate(12);
+
+        return view('stories.public', compact('stories'));
     }
 }

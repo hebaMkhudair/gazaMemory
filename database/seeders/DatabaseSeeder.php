@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use Illuminate\Support\Str; // استيراد Str Facade لإنشاء الـ slug
 
 class DatabaseSeeder extends Seeder
@@ -50,7 +50,6 @@ class DatabaseSeeder extends Seeder
         $defaultCover1 = 'story_covers/defaultCover.jpg';
         $defaultCover2 = 'story_covers/storyCover.jpg';
         $defaultCover3 = 'story_covers/child.jpg';
-
 
         // تعريف القصص في مصفوفة لتسهيل توليد الـ slugs
         $storiesData = [

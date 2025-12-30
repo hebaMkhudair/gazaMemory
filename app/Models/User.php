@@ -22,9 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_picture', 
-        'bio', 
-        'avatar'
+        'profile_picture',
+        'bio',
+        'avatar',
     ];
 
     /**
@@ -50,7 +50,7 @@ class User extends Authenticatable
         ];
     }
 
-       /**
+    /**
      * Get the stories for the user.
      * المستخدم الواحد يمكن أن يكتب العديد من القصص.
      */
