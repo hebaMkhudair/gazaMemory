@@ -36,12 +36,12 @@
                             <option value="صمود" {{ old('type', $story->type) == 'صمود' ? 'selected' : '' }}>صمود</option>
                             <option value="أمل" {{ old('type', $story->type) == 'أمل' ? 'selected' : '' }}>أمل</option>
                             <option value="تحدي" {{ old('type', $story->type) == 'تحدي' ? 'selected' : '' }}>تحدي</option>
-                            <option value="تحدي" {{ old('type', $story->type) == 'تراث' ? 'selected' : '' }}>تراث</option>
+                            <option value="تراث" {{ old('type', $story->type) == 'تراث' ? 'selected' : '' }}>تراث</option>
                             {{-- إذا أضفت "تكافل" أو أي نوع آخر، يجب أن يكون موجودًا هنا أيضاً --}}
                             {{-- <option value="تكافل" {{ old('type', $story->type) == 'تكافل' ? 'selected' : '' }}>تكافل</option> --}}
                         </select>
                         @error('type')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             </div>
                         @endif
                         @error('cover_image')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-red-500 dark:text-red-400 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>

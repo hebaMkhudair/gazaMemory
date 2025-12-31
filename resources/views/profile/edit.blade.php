@@ -246,6 +246,35 @@
         </section>
 
         {{-- ================================================================================= --}}
+        {{-- قسم تسجيل الخروج --}}
+        {{-- ================================================================================= --}}
+        <section class="space-y-6 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg shadow-sm border border-blue-200 dark:border-blue-700">
+            <header>
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    تسجيل الخروج
+                </h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    قم بتسجيل الخروج من حسابك بأمان.
+                </p>
+            </header>
+
+            <form method="POST" action="{{ route('logout') }}" class="space-y-4">
+                @csrf
+
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    سيتم تسجيل خروجك من حسابك وستعود إلى الصفحة الرئيسية.
+                </p>
+
+                <div class="flex items-center gap-4">
+                    <button type="submit"
+                        class="group relative flex justify-center py-2 px-6 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition ease-in-out duration-150">
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        {{-- ================================================================================= --}}
         {{-- قسم حذف الحساب (دمج محتوى delete-user-form) --}}
         {{-- ================================================================================= --}}
         <section class="space-y-6 bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200">

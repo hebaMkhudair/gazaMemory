@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Story;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     /**
      * Display the main reading page.
      */
-    public function index()
+    public function index(Request $request)
     {
         // 1. جلب قصة اليوم
         $todaysStory = Story::latest('published_at')->first(); // أحدث قصة كقصة اليوم
@@ -18,7 +20,7 @@ class HomeController extends Controller
         $trendingStories = Story::inRandomOrder()->limit(6)->get(); // 6 قصص عشوائية
 
         // 3. بيانات المستخدم الحالي (لصورة البروفايل في الهيدر)
-        $user = Auth()->user(); // يجلب المستخدم الذي قام بتسجيل الدخول حالياً
+        $user = Auth::user(); // يجلب المستخدم الذي قام بتسجيل الدخول حالياً
 
         // 4. الأقسام (Sections) - إضافة 'slug' لكل قسم
         $sections = [
@@ -31,7 +33,16 @@ class HomeController extends Controller
 
         ];
 
+        // نوع الفلترة والبحث
+        $typeMapping = [
+            'suffering' => 'معاناة',
+            'resilience' => 'صمود',
+            'hope' => 'أمل',
+            'challenge' => 'تحدي',
+            'heritage' => 'تراث',
+        ];
+
         // تمرير البيانات إلى الـ view
-        return view('home', compact('todaysStory', 'trendingStories', 'user', 'sections'));
+        return view('home', compact('todaysStory', 'trendingStories', 'user', 'sections', 'typeMapping'));
     }
 }

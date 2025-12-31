@@ -27,22 +27,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
-                'name' => 'أحمد محمود',
-                'email' => 'ahmed.mahmoud@example.com',
-                'password' => Hash::make('password'), // كلمة مرور: password
-                'avatar' => $defaultAvatar,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'name' => 'سارة علي',
-                'email' => 'sara.ali@example.com',
-                'password' => Hash::make('password'), // كلمة مرور: password
-                'avatar' => $defaultAvatar,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+           
             // أضف المزيد من المستخدمين هنا
         ]);
 
@@ -63,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'أطفال غزة: أحلام لا تموت',
-                'user_id' => 2,
+                'user_id' => 1,
                 'content' => 'على الرغم من قسوة الواقع، يظل أطفال غزة يحملون في قلوبهم أحلاماً كبيرة. يبتكرون طرقاً للعب والفرح، ويجدون السعادة في أبسط الأشياء. قصصهم مليئة بالبراءة والشجاعة، وتذكرنا بأن الأمل يزهر حتى في أصعب الظروف. إنهم جيل المستقبل الذي يحمل على عاتقه بناء غد أفضل، مستلهمين من صمود آبائهم وأجدادهم.',
                 'cover_image' => $defaultCover3,
                 'type' => 'أمل',
@@ -71,7 +56,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'ذاكرة الأجداد: قصص من التراث الفلسطيني',
-                'user_id' => 3,
+                'user_id' => 1,
                 'content' => 'التراث الفلسطيني غني بالقصص والحكايات التي توارثتها الأجيال. هذه القصص ليست مجرد سرد لأحداث ماضية، بل هي جزء حي من الهوية الفلسطينية، تحمل في طياتها قيم الصبر والتضحية والانتماء للأرض. من حكايات الحصاد إلى قصص البطولة، كل واحدة منها تروي فصلاً من تاريخ شعب لا ينسى جذوره.',
                 'cover_image' => $defaultCover1,
                 'type' => 'تراث',
@@ -87,7 +72,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'title' => 'فن التطريز الفلسطيني: حكاية خيط وإبرة',
-                'user_id' => 2,
+                'user_id' => 1,
                 'content' => 'التطريز الفلسطيني ليس مجرد حرفة، بل هو فن يحكي قصصاً عن التاريخ والهوية. كل غرزة تحكي عن قرية، وكل لون يرمز إلى معنى. النساء الفلسطينيات يحافظن على هذا التراث العريق، وينقلنه من جيل إلى جيل، ليظل شاهداً على الإبداع والصمود.',
                 'cover_image' => $defaultCover1,
                 'type' => 'أمل',

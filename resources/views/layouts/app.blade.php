@@ -30,7 +30,7 @@
 
     @include('partials.header')
 
-    <main class="flex-grow container mx-auto px-4 py-8">
+    <main class="flex-grow container mx-auto px-4 py-8 mt-24">
         @yield('content') {{-- هذا هو المكان الذي سيتم فيه عرض محتوى كل صفحة --}}
     </main>
 

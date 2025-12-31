@@ -17,6 +17,8 @@ class StoryController extends Controller
     {
         $query = Story::query();
         $currentSectionName = 'جميع القصص'; // اسم القسم الافتراضي
+        $searchQuery = $request->input('search', '');
+        $typeFilter = $request->input('type', '');
 
         // تعريف الأقسام الثابتة ومطابقة الـ slug مع الاسم العربي
         $typeMapping = [
@@ -24,14 +26,20 @@ class StoryController extends Controller
             'resilience' => 'صمود',
             'hope' => 'أمل',
             'challenge' => 'تحدي',
-            // أضف أي أنواع أخرى هنا بنفس الطريقة
-            // 'solidarity' => 'تكافل',
-            // 'giving' => 'عطاء',
+            'heritage' => 'تراث',
         ];
 
+        // البحث في العنوان والمحتوى
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('content', 'like', '%'.$searchQuery.'%');
+            });
+        }
+
         // التحقق مما إذا كان هناك طلب لفلترة حسب النوع
-        if ($request->has('type')) {
-            $typeSlug = $request->input('type');
+        if ($typeFilter) {
+            $typeSlug = $typeFilter;
 
             // البحث عن الاسم العربي المطابق للـ slug
             $arabicTypeName = $typeMapping[$typeSlug] ?? null;
@@ -39,10 +47,6 @@ class StoryController extends Controller
             if ($arabicTypeName) {
                 $query->where('type', $arabicTypeName);
                 $currentSectionName = $arabicTypeName; // تحديث اسم القسم الحالي
-            } else {
-                // إذا كان الـ slug غير صالح، يمكنك التعامل معه هنا
-                // مثلاً: إعادة توجيه لصفحة جميع القصص أو إظهار رسالة خطأ
-                // حالياً، لن يتم تطبيق أي فلترة إذا كان الـ slug غير معروف
             }
         }
 
@@ -51,21 +55,47 @@ class StoryController extends Controller
         // لتمريرها إلى الـ layout (إن كان layout.app يستخدمها)
         $user = Auth::user();
 
-        return view('stories.index', compact('stories', 'currentSectionName', 'user'));
+        return view('stories.index', compact('stories', 'currentSectionName', 'user', 'searchQuery', 'typeFilter', 'typeMapping'));
     }
 
     /**
      * Display a listing of stories written by the authenticated user.
      */
-    public function myStories()
+    public function myStories(Request $request)
     {
         $user = Auth::user();
-        $myStories = Story::where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $searchQuery = $request->input('search', '');
+        $typeFilter = $request->input('type', '');
+        
+        $typeMapping = [
+            'suffering' => 'معاناة',
+            'resilience' => 'صمود',
+            'hope' => 'أمل',
+            'challenge' => 'تحدي',
+            'heritage' => 'تراث',
+        ];
+        
+        $query = Story::where('user_id', Auth::id());
+        
+        // البحث في العنوان والمحتوى
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('content', 'like', '%'.$searchQuery.'%');
+            });
+        }
+        
+        // فلترة حسب النوع
+        if ($typeFilter) {
+            $arabicTypeName = $typeMapping[$typeFilter] ?? null;
+            if ($arabicTypeName) {
+                $query->where('type', $arabicTypeName);
+            }
+        }
+        
+        $myStories = $query->latest()->get();
 
-        // dd($myStories);
-        return view('stories.my-stories', compact('myStories', 'user'));
+        return view('stories.my-stories', compact('myStories', 'user', 'searchQuery', 'typeFilter', 'typeMapping'));
     }
 
     /**
@@ -229,12 +259,42 @@ class StoryController extends Controller
     /**
      * Display published stories for the public homepage.
      */
-    public function publicStories(): \Illuminate\View\View
+    public function publicStories(Request $request): \Illuminate\View\View
     {
-        $stories = Story::whereNotNull('published_at')
-            ->latest('published_at')
-            ->paginate(12);
+        $searchQuery = $request->input('search', '');
+        $typeFilter = $request->input('type', '');
 
-        return view('stories.public', compact('stories'));
+        // تعريف الأقسام الثابتة ومطابقة الـ slug مع الاسم العربي
+        $typeMapping = [
+            'suffering' => 'معاناة',
+            'resilience' => 'صمود',
+            'hope' => 'أمل',
+            'challenge' => 'تحدي',
+            'heritage' => 'تراث',
+        ];
+
+        $query = Story::whereNotNull('published_at');
+
+        // البحث في العنوان والمحتوى
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%'.$searchQuery.'%')
+                  ->orWhere('content', 'like', '%'.$searchQuery.'%');
+            });
+        }
+
+        // التحقق مما إذا كان هناك طلب لفلترة حسب النوع
+        if ($typeFilter) {
+            $typeSlug = $typeFilter;
+            $arabicTypeName = $typeMapping[$typeSlug] ?? null;
+
+            if ($arabicTypeName) {
+                $query->where('type', $arabicTypeName);
+            }
+        }
+
+        $stories = $query->latest('published_at')->paginate(12);
+
+        return view('stories.public', compact('stories', 'searchQuery', 'typeFilter', 'typeMapping'));
     }
 }

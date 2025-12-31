@@ -16,11 +16,13 @@
                     نشرت بتاريخ: <span class="font-semibold">{{ $story->published_at->format('Y-m-d') }}</span>
                 </div>
 
-                @if($story->cover_image)
-                    <div class="mb-8 overflow-hidden rounded-lg shadow-lg">
+                <div class="mb-8 overflow-hidden rounded-lg shadow-lg">
+                    @if($story->cover_image)
                         <img src="{{ asset('storage/' . $story->cover_image) }}" alt="صورة غلاف القصة" class="w-full h-96 object-cover object-center">
-                    </div>
-                @endif
+                    @else
+                        <img src="{{ asset('assets/img/default-story-cover.png') }}" alt="صورة غلاف افتراضية" class="w-full h-96 object-cover object-center">
+                    @endif
+                </div>
 
                 <div class="prose dark:prose-invert prose-lg text-gray-800 dark:text-gray-200 leading-relaxed mb-8">
                     {{-- لعرض المحتوى مع الحفاظ على تنسيقات HTML إن وجدت --}}
@@ -109,11 +111,11 @@
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                                        <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
                                             @if ($comment->user->avatar)
-                                                <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="User Avatar" class="w-full h-full object-cover">
+                                                <img src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}" class="w-full h-full object-cover">
                                             @else
-                                                <span class="text-gray-600 dark:text-gray-300 font-bold">{{ substr($comment->user->name, 0, 1) }}</span>
+                                                <img src="{{ asset('storage/avatars/defaultAvatar.jpg') }}" alt="صورة افتراضية" class="w-full h-full object-cover">
                                             @endif
                                         </div>
                                         <div>

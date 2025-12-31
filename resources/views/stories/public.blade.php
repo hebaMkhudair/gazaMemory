@@ -15,6 +15,61 @@
                 </p>
             </div>
 
+            <!-- Search and Filter Section -->
+            <div class="max-w-7xl mx-auto mb-6">
+                <form method="GET" action="{{ route('home') }}"
+                    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm
+                   border border-gray-100 dark:border-gray-700
+                   px-6 py-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <!-- SEARCH (ياخد أغلب المساحة) -->
+                        <div class="flex-grow">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-3 flex items-center text-gray-400 text-sm">
+                                    🔍
+                                </span>
+                                <input type="text" name="search" value="{{ $searchQuery }}" placeholder="ابحث في القصص"
+                                    class="w-full h-10 pr-9 pl-4 rounded-lg
+                                   bg-gray-50 dark:bg-gray-700
+                                   border border-gray-200 dark:border-gray-600
+                                   focus:ring-2 focus:ring-indigo-500
+                                   text-sm text-gray-700 dark:text-white">
+                            </div>
+                        </div>
+
+                        <!-- CATEGORY (عرض ثابت) -->
+                        <div style="width:180px;">
+                            <select name="type"
+                                class="w-full h-10 px-4 rounded-lg
+                               bg-gray-50 dark:bg-gray-700
+                               border border-gray-200 dark:border-gray-600
+                               focus:ring-2 focus:ring-indigo-500
+                               text-sm text-gray-700 dark:text-white">
+                                <option value="">كل التصنيفات</option>
+                                @foreach ($typeMapping as $slug => $arabicName)
+                                    <option value="{{ $slug }}" @selected($typeFilter === $slug)>
+                                        {{ $arabicName }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- BUTTON (صغير أنيق) -->
+                        <div style="width:96px;">
+                            <button type="submit"
+                                class="w-full h-10 bg-indigo-600 hover:bg-indigo-700
+                               text-white rounded-lg font-medium text-sm transition">
+                                بحث
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
             @if ($stories->isEmpty())
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100 text-center">
@@ -74,7 +129,7 @@
                                             <span class="font-semibold">{{ $story->type }}</span>
                                         </p>
                                     @endif
-                                    <p class="text-gray-500 dark:text-gray-500 text-xs">
+                                    <p class="text-gray-500 dark:text-gray-400 text-xs">
                                         {{ $story->published_at->format('Y-m-d') }}
                                     </p>
                                 </div>
