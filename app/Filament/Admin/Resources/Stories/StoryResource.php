@@ -13,12 +13,19 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class StoryResource extends Resource
 {
     protected static ?string $model = Story::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    // Arabic labels
+    protected static ?string $navigationLabel = 'القصص';
+    protected static ?string $pluralModelLabel = 'القصص';
+    protected static ?string $modelLabel = 'قصة';
+    protected static string|UnitEnum|null $navigationGroup = 'لوحة الإدارة';
 
     public static function form(Schema $schema): Schema
     {
