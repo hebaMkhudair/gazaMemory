@@ -293,7 +293,7 @@ class StoryController extends Controller
             }
         }
 
-        $stories = $query->latest('published_at')->paginate(12);
+        $stories = $query->latest('published_at')->paginate(12)->withQueryString();
 
         return view('stories.public', compact('stories', 'searchQuery', 'typeFilter', 'typeMapping'));
     }
